@@ -1,3 +1,13 @@
+<?php
+    require __DIR__. "/session_start.php";
+    $con = con();
+    if(!$con){
+        die_with_error("Error connecting to database");
+    }
+    $user_ip = $_SERVER['REMOTE_ADDR'];
+
+   check_unique_visitors($con, $user_ip);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,9 +28,10 @@
         <span>Open, Know, Repeat </span>
     </div>
     <nav>
+        
         <?php if(isLoggedIn()): ?>
-            <a href="logout.php">logout</a>
-            <a href="createpost.php">Create Post</a>
+            <a href="/logout.php">logout</a>
+            <a href="/createpost.php">Create Post</a>
         <?php else: ?>
             <a href="login.php">login</a>
             <a href="join.php">Join</a>
