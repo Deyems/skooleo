@@ -1,10 +1,7 @@
 <?php 
-    require "session_start.php";
     require __DIR__.'/settings.php';
-    $con = con();
-    if(!$con){
-        die_with_error("Error connecting to database");
-    }
+    require APP_INCLUDE_PATH. '/header.php';
+
     $title = "";
     $content = "";
 
@@ -36,7 +33,6 @@
     
 ?>
 
-<?php require APP_INCLUDE_PATH. '/header.php' ?>
 <section class="container">
     <?php require APP_INCLUDE_PATH. "/form.php" ?>
 </section>
