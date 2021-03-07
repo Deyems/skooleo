@@ -6,11 +6,9 @@
 
     $post = get_post($con, $post_id);
     
-    $views = isset($post) ? $post['views']+1 : $post['views']+0 ;
-    if(!increase_views_count($con,$post_id,$views)){
-        echo 'Something went wrong...';
-    };
-
+    $views = isset($post) ? $post['views']+1 : $post['views']+0;
+    increase_views_count($con,$post_id,$views);
+    
     if(!$post_id || !$post){
         header("Location: /");
         exit;
@@ -60,29 +58,30 @@
                 <div class="show-success"><?php __($success); ?>
                 </div>
             <?php endif; ?>
-
-            <div class="ctrl-btns">
-                <div>
-                    <button class="make-comment">Make Comment</button>
-                    <button class="view-comment">Show Comments</button>
-                </div>
-                <div>
-                    <?php if(get_publisher_status($con,$_SESSION['user_id'],$post_id)): ?>
-                        <a class="edit-btn" href="editpost.php?post_id=<?php __($post_id) ?>">Edit Post</a>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <!--Dont show until reply is clicked-->
-            <div class="comment-form">
-                <form action="" method="post">
-                    <div class="comment-inp-grp">
-                        <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <div class="ctrl-btns">
+                    <div>
+                        <button class="make-comment">Make Comment</button>
+                        <button class="view-comment">Show Comments</button>
                     </div>
                     <div>
-                        <button name="commentbtn" type="submit">Post</button>
+                        <?php if(get_publisher_status($con,$_SESSION['user_id'],$post_id)): ?>
+                            <a class="edit-btn" href="editpost.php?post_id=<?php __($post_id) ?>">Edit Post</a>
+                        <?php endif; ?>
                     </div>
-                </form>
-            </div>
+                </div>
+                <!--Dont show until reply is clicked-->
+                <div class="comment-form">
+                    <form action="" method="post">
+                        <div class="comment-inp-grp">
+                            <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+                        </div>
+                        <div>
+                            <button name="commentbtn" type="submit">Post</button>
+                        </div>
+                    </form>
+                </div>
+            <?php endif; ?>
         </div>
         <?php require APP_INCLUDE_PATH. '/postmeta.php'; ?>
         
