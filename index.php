@@ -16,13 +16,9 @@
             ?>
         <div class="post">
             <h1 class="post-title">
-                <?php if(isLoggedIn()): ?>
-                    <a href="post.php?post_id=<?php __($post['id']); ?>">
-                        <?php __($post['title']); ?>
-                    </a>
-                <?php else: ?>
-                    <a href="/"><?php __($post['title']); ?> </a>
-                <?php endif; ?>
+                <a href="post.php?post_id=<?php __($post['id']); ?>">
+                    <?php __($post['title']); ?>
+                </a>
             </h1>                
             <p class="post-content"> <?php __($post['content']); ?>
             </p>
