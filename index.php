@@ -1,14 +1,10 @@
 <?php
-    require __DIR__."/session_start.php";
     require __DIR__.'/settings.php';
-    $con = con();
-    if(!$con){
-        die_with_error("Error connecting to database");
-    }
-    $posts = get_posts($con);
+    require APP_INCLUDE_PATH. '/header.php';
 ?>
 
-    <?php require APP_INCLUDE_PATH. '/header.php' ?>
+    <?php $posts = get_posts($con); ?>
+
     <section class="container section">
         <?php foreach($posts as $post): ?>
             <?php $comments = get_comments($con, $post['id']);
