@@ -28,7 +28,6 @@
         <span>Open, Know, Repeat </span>
     </div>
     <nav>
-        
         <?php if(isLoggedIn()): ?>
             <a href="/logout.php">logout</a>
             <a href="/createpost.php">Create Post</a>
