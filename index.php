@@ -27,5 +27,6 @@
         <?php require APP_INCLUDE_PATH. '/postmeta.php'; ?>
         <?php endforeach; ?>
     </section>
+    <?php require APP_INCLUDE_PATH. '/footer.php'; ?>
 </body>
 </html>

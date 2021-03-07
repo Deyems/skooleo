@@ -30,3 +30,4 @@
 <section class="container">
     <?php require APP_INCLUDE_PATH. "/form.php" ?>
 </section>
+<?php require APP_INCLUDE_PATH. '/footer.php'; ?>
