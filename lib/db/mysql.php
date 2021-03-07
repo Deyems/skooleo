@@ -435,3 +435,52 @@ function get_publisher_status($con,int $user_id,int $post_id){
     }
     return false;
 }
+
+
+/**
+ * COUNT UNIQUE VISITORS
+ */
+function check_unique_visitors($con, $user_ip){
+    // $user_ip = $_SERVER['REMOTE_ADDR'];
+    $output = "";
+
+    $sql = 'SELECT ip_address FROM unique_visitors
+    WHERE ip_address=?';
+    $stmt = mysqli_prepare($con,$sql);
+   
+    if($stmt){
+        mysqli_stmt_bind_param($stmt,'s',$user_ip);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $ip_address);
+        while(mysqli_stmt_fetch($stmt)){
+            $output = $ip_address;
+        }
+        if(!$output){
+            save_unique_visitors($con, $user_ip);
+        }
+        mysqli_stmt_close($stmt);
+        return $output;
+    }
+}
+
+function save_unique_visitors($con,$user_ip){
+    $sql = "INSERT INTO unique_visitors(ip_address) VALUES(?)";
+    $stmt = mysqli_prepare($con,$sql);
+    if($stmt){
+        mysqli_stmt_bind_param($stmt,"s",$user_ip);
+        mysqli_stmt_execute($stmt);
+    }
+}
+
+
+/**
+ * Find Total Visitors
+ */
+function total_unique_visitors($con){
+    $sql = 'SELECT COUNT(*) as visitors FROM unique_visitors';
+    if($result = mysqli_query($con,$sql)){
+        $row = mysqli_fetch_assoc($result);
+        return intval($row['visitors']);
+    }
+    return 0;
+}
