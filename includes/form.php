@@ -16,7 +16,7 @@
                 <label for="title">Title</label>
             </div>
             <div>
-                <input type="text" name="title" value="<?php if(!empty($error)) __($title); ?>" placeholder="What title will you give your post?" id="title">
+                <input type="text" name="title" value="<?php if(!empty($error) || !empty($title)) __($title); ?>" placeholder="What title will you give your post?" id="title">
             </div>
             <?php endif; ?>
         </div>
@@ -26,7 +26,7 @@
             </div>
             <div>
                 <textarea name="content" id="content" cols="30" placeholder="What is the content of your post?" rows="10">
-                    <?php if(!empty($error)) __($content); ?>
+                    <?php if(!empty($error) || !empty($content)) __($content); ?>
                 </textarea>
             </div>
         </div>
