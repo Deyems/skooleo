@@ -1,11 +1,7 @@
 <?php
-    require "session_start.php";
     require __DIR__.'/settings.php';
-    $con = con();
-    if(!$con){
-        die_with_error("Error connecting to database");
-    }
-
+    require APP_INCLUDE_PATH. '/header.php';
+    
     $comment_id = (isset($_GET['comment_id'])) ? abs(intval($_GET['comment_id'])) : 0;
     $post_id = (isset($_GET['post_id'])) ? abs(intval($_GET['post_id'])) : 0;
     
@@ -39,7 +35,6 @@
     }
 ?>
 
-<?php require APP_INCLUDE_PATH. '/header.php' ?>
 <section class="container">
     <?php require APP_INCLUDE_PATH. "/form.php" ?>
 </section>
