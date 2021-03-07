@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="assets/scripts/main.js" defer></script>
-    <title><?php __($post['title']) ?></title>
+    <title><?php __('XiReader'); ?></title>
 </head>
 <body>
 <header>
