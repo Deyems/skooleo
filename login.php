@@ -55,3 +55,4 @@
             </div>
         </div>
     </section>
+    <?php require APP_INCLUDE_PATH. '/footer.php'; ?>

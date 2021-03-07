@@ -116,5 +116,6 @@
             <?php endif; ?>
         </div>
     </section>
+    <?php require APP_INCLUDE_PATH. '/footer.php'; ?>
 </body>
 </html>
