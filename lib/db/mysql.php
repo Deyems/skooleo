@@ -46,11 +46,7 @@ function create_post($con, array $data){
     if(!isset($data['visits'])){
         $data['visits'] = 0;
     }
-    if(!isset($data['unique_visits'])){
-        $data['unique_visits'] = 0;
-    }
-
-
+    
     $sql = 'INSERT INTO posts(title, content, user_id, visits, created_at)
     VALUES (?,?,?,?,?)';
 
@@ -61,47 +57,11 @@ function create_post($con, array $data){
         if(mysqli_stmt_execute($stmt)){
             return true;
         }
-        // $affected = mysqli_stmt_affected_rows($stmt);
     }
     return false;
 }
 
-/**
- * To Count Views
- */
-function increase_views_count($con, $post_id, $views){
-    //INCREASE VIEWS COUNT HERE
 
-    $sql = 'UPDATE posts SET visits=? WHERE id=?';
-    $stmt = mysqli_prepare($con,$sql);
-    
-    if($stmt){
-        mysqli_stmt_bind_param($stmt,"ii",$views,$post_id);
-        if(mysqli_stmt_execute($stmt)){
-            return true;
-        }else return false;
-    }
-    return false;
-}
-
-/**
- * Get Views Count
- */
-function get_no_of_views($con, $post_id){
-    $sql = 'SELECT visits FROM posts WHERE id=?';
-
-    $stmt = mysqli_prepare($con,$sql);
-    $output = 0;
-     mysqli_stmt_bind_param($stmt,'d',$post_id);
-    mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $visits);
-        while(mysqli_stmt_fetch($stmt)){
-            $output = $visits;
-        }
-        mysqli_stmt_close($stmt);
-        return $output;
-    
-}
 /**
  * To retrieve a single POST
  * @param object $con connection to db
@@ -171,7 +131,7 @@ function count_post($con):int{
  * Register a user
  * @param object connection to database
  * @param array data to send to db
- * @return boolean
+ * @return boolean true if registration is successful false if Unsuccessful
  */
 function register($con, array $data){
     $sql = 'INSERT INTO users(name,password,email)
@@ -193,7 +153,7 @@ function register($con, array $data){
 /**
  * Check For Existing User emails
  * @param string email for form field
- * @return boolean
+ * @return boolean true if email exists false if email doesn't exist
  */
 function emailExist($con, $user){
     
@@ -211,9 +171,7 @@ function emailExist($con, $user){
         if(!empty($output)) {
             return true;
         };
-            return false;
-
-        
+        return false;
         mysqli_stmt_close($stmt);
     }
 }
@@ -244,8 +202,6 @@ function authenticate($con,$data){
                 return false;
             }
             if($output['email'] === $data['email']){
-                //Check Password
-                //User password verify here.
                 
                 if(password_verify_hash($data['passkey'],$output['passkey'])){
                     return $output;
@@ -436,9 +392,47 @@ function get_publisher_status($con,int $user_id,int $post_id){
     return false;
 }
 
+/**
+ * To Count Views
+ * @param object connection to database
+ * @param integer post id
+ * @param integer no of views 
+ */
+function increase_views_count($con, $post_id, $views){
+    $sql = 'UPDATE posts SET visits=? WHERE id=?';
+    $stmt = mysqli_prepare($con,$sql);
+    if($stmt){
+        mysqli_stmt_bind_param($stmt,"ii",$views,$post_id);
+        mysqli_stmt_execute($stmt);
+    }
+}
+
+/**
+ * Get Views Count
+ * @param object connection object
+ * @param integer post id
+ * @return integer no of views
+ */
+function get_no_of_views($con, $post_id){
+    $sql = 'SELECT visits FROM posts WHERE id=?';
+
+    $stmt = mysqli_prepare($con,$sql);
+    $output = 0;
+    mysqli_stmt_bind_param($stmt,'d',$post_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $visits);
+    while(mysqli_stmt_fetch($stmt)){
+        $output = $visits;
+    }
+    mysqli_stmt_close($stmt);
+    return $output;   
+}
 
 /**
  * COUNT UNIQUE VISITORS
+ * @param object connection object
+ * @param string user ip address
+ * @return string user ip address.
  */
 function check_unique_visitors($con, $user_ip){
     // $user_ip = $_SERVER['REMOTE_ADDR'];
@@ -463,6 +457,11 @@ function check_unique_visitors($con, $user_ip){
     }
 }
 
+/**
+ * SAVE UNIQUE VISITORS
+ * @param object connection object
+ * @param string user ip address
+ */
 function save_unique_visitors($con,$user_ip){
     $sql = "INSERT INTO unique_visitors(ip_address) VALUES(?)";
     $stmt = mysqli_prepare($con,$sql);
@@ -474,7 +473,9 @@ function save_unique_visitors($con,$user_ip){
 
 
 /**
- * Find Total Visitors
+ * FIND TOTAL VISITORS
+ * @param object connection object
+ * @return integer zero if no visitors else returns total count of visitors
  */
 function total_unique_visitors($con){
     $sql = 'SELECT COUNT(*) as visitors FROM unique_visitors';
